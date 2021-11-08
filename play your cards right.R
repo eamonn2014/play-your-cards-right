@@ -69,11 +69,13 @@
     } }
    
    # --------------------------------
-   
+   # Here is the engine!
    # 2--------------------------------Guess card2 
    
-    # if the first card is <9 we should guess higher, record if we are correct of not.
-   if (hand[1] < 9 ) { 
+    
+    
+    # if the first card is <8 we should guess higher, record if we are correct or not.
+   if (hand[1] < 8 ) { 
      H1 <- hand[2] > hand[1]   
      L1=NA
       }  else { 
@@ -87,7 +89,8 @@
    
    if (isTRUE(H1)|isTRUE(L1)) { 
      # if the 2nd card is <9 we would guess higher, record if we are correct of not.
-     if (hand[2] < 9 ) { 
+      
+     if (hand[2] < 8 ) { 
        H2 <- hand[3] > hand[2]  
        L2=NA
      }  else { 
@@ -117,16 +120,16 @@
   # 5 ---------------------------run the simulations and manage the output
   # three choices enter "3 random" and 3 cards are chosen at random to play the game . expect 50%
   # enter a positive integer between 1 and 14. That is the first card you cannot change it . Q1 use 11 for a jack expect 48%
-  # enter a negative integer between 1 and 14. That is the first card you always change. Enter -11 for Q2.  %50?
+  # enter a negative integer between 1 and 14. That is the first card you always change. Enter -11 for Question 2.  %50?
   # enter 0. A random first card always change.50%?
   # enter 99. play the game optimally changing on cards 5:11 ~ 55%
    sims <- 1000000
    set.seed(124142)
    result <- replicate(sims, tmpfun(card1="3 random")) # 
-   result <- replicate(sims, tmpfun(card1=11)) # 
+   result <- replicate(sims, tmpfun(card1= 11)) # 
    result <- replicate(sims, tmpfun(card1=-11))
-   result <- replicate(sims, tmpfun(card1=0)) 
-   result <- replicate(sims, tmpfun(card1=99))
+   result <- replicate(sims, tmpfun(card1= 0)) 
+   result <- replicate(sims, tmpfun(card1= 99))
    
    # managing the results...this seems like it could be shortened
    x <- unlist(result)
@@ -147,7 +150,38 @@
    #-----------------------------------------------------------------------------------------------------------
    
    
+   ## run the simulations in a loop
+   simul <- function(xx, sims=100000) {
+      
+      result <- replicate(sims, tmpfun(card1=xx))
+      # managing the results...this seems like it could be shortened
+      x <- unlist(result)
+      xx <-  as.data.frame(cbind(result=data.frame(x), test =names(x)))
+      xx$id <- ave(xx$test ,xx$test ,  FUN = seq_along)   
+      require(tidyverse)
+      z <- xx %>% spread(test, x)
+      apply(z[,2:5],2,mean, na.rm=T)  
+      
+      zz <- z[,2:5]
+      zz <- zz*1  
+      zz$card2 <- rowSums(zz[,c("H1", "L1")], na.rm=TRUE)  # any win here is counted
+      zz$card3 <- rowSums(zz[,c("H2", "L2")], na.rm=TRUE)  # any win here is counted
+      zz$card23 <- rowSums(zz[,c("card2", "card3")], na.rm=TRUE) # both have to be guessed correctly to win the game
+      y <-  zz$card23
+      print(length(y[y==2])/sims)   # proportion of times we win 
+      
+      
+   }
    
+   for(i in -2:-14) {
+      simul(i, sims=100000) 
+   }
+   
+   
+   
+   
+   
+   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    # ANALYTICAL
    
    # starting with 2
@@ -157,7 +191,7 @@
    p2 <- c(24,28,32,36,40,44)          # when 8 is observed prob next card is < 8 same for 9 10
    
    LJ * sum(c(p1,p2)) / 50 #
-   
+ 
    # starting with 3
    LJ <- 4/51
    # look at all values above 3 and then note the prob changes at card value 8
