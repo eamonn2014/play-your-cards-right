@@ -1,7 +1,7 @@
 
 n <- 13
 
-pycr <- function( pack.size=n, card1=11 ) {
+pycr <- function( pack.size=13, card1=11 ) {
   ###########################################analytical removing JACK
   
   # pack.size<-n<-13
@@ -114,8 +114,8 @@ pycr <- function( pack.size=n, card1=11 ) {
   B <- 3*r[,card1]
   num <-  rowSums(cbind(A,B),na.rm=TRUE)
   
-  den1 = (n*4)-2 
-  den2 = (n*4)-3
+  den1 = (pack.size*4)-2 
+  den2 = (pack.size*4)-3
   den <- den1*den2 # rep(den1*den2, pack.size)
   
   w1 <- as.vector(table(pack2))
@@ -136,6 +136,9 @@ for(i in 1:n){
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+pycr(pack.size=10, card1=4)
+pycr(pack.size=5, card1=3)
 
 pycr(pack.size=13, card1=6)
 pycr(pack.size=13, card1=7)
