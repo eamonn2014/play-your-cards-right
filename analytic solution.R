@@ -110,7 +110,7 @@ pycr <- function( pack.size=n, card1=11 ) {
   
   
   # work on numerators
-  A <- 4*rowSums(r[,-card1], na.rm=TRUE)
+  A <- 4*rowSums(r[,-card1], na.rm=TRUE) 
   B <- 3*r[,card1]
   num <-  rowSums(cbind(A,B),na.rm=TRUE)
   
