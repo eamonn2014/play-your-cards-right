@@ -183,7 +183,7 @@
    
    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    # ANALYTICAL
-   
+     
    # starting with 2
    LJ <- 4/51
    # look at all values above 3 and then note the prob changes at card value 8
