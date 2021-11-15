@@ -1,7 +1,7 @@
 
  
 
-pycr <- function( pack.size=13, card1=10 ) {
+pycr <- function( pack.size=13, card1=8 ) {
   ###########################################analytical removing JACK
   
   # pack.size<-n<-13
@@ -127,22 +127,7 @@ pycr <- function( pack.size=13, card1=10 ) {
       #---------------------------
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    #------------------------------------------------
+      #------------------------------------------------
     
   }
   #------------------------------------------
@@ -239,7 +224,7 @@ pycr(pack.size=13, card1=3)
 pycr(pack.size=13, card1=4)
 pycr(pack.size=13, card1=5)
 pycr(pack.size=13, card1=6)
-pycr(pack.size=13, card1=7)
+pycr(pack.size=13, card1=7) # mid card
 pycr(pack.size=13, card1=8)
 pycr(pack.size=13, card1=9)
 pycr(pack.size=13, card1=10)
@@ -247,4 +232,5 @@ pycr(pack.size=13, card1=11)
 pycr(pack.size=13, card1=12)
 pycr(pack.size=13, card1=13)
 
-
+pycr(pack.size=5, card1=4)
+pycr(pack.size=5, card1=3)
