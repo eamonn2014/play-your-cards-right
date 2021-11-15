@@ -1,7 +1,7 @@
 
-n <- 13
+ 
 
-pycr <- function( pack.size=13, card1=11 ) {
+pycr <- function( pack.size=13, card1=10 ) {
   ###########################################analytical removing JACK
   
   # pack.size<-n<-13
@@ -38,28 +38,120 @@ pycr <- function( pack.size=13, card1=11 ) {
       
       A <-  sum(pack3<j) #  
       B <-  sum(pack3>j) #
-     # print(A);print(B)
+      # print(A);print(B)
       if( i != j) {
         
         # assess if we guess higher lower or 50:50 
         
         x=max(A,B)
-      #  print(x)
+        #  print(x)
         
         r[i,j]<-x    # add to matrix
         
       }
-       
+      
     }
     
     #----------------------------
     
   }
   
-  ### now we assess the impact of the first card being >=8
- 
   
-  step <-  (section1+1):pack.size
+  
+  
+  ################start middle card
+  # #------------------------------------------
+  # # middle card
+  mid <-  median(1:pack.size)  # when first card is the middle card
+  
+  for (i in mid) {   # work only when replaced card is middle card
+    
+    x <- which(pack2==i)[1]                    # remove first card
+    pack3 <- pack2[-x]  
+    
+    #-------------------------
+    if (card1 < i)     {   # now if the initial card that we threw away is less than the middle card
+      
+      #--------------------------
+      for (j in (i+1):pack.size) {  # work on the cards that are higher
+        
+        A <-  sum(pack3<j) #
+        B <-  sum(pack3>j) #
+        
+        #-------------------
+        if( i != j) {
+          
+          x=max(A,B)
+          r[mid,j]<-x
+          
+        }
+        #-------------------
+      }
+    } else if ( card1 > i)     { # now if the initial card that we threw away is > than the middle card
+      
+      for (j in (1):(i-1)) {  # work on the cards that are lower
+        
+        A <-  sum(pack3<j) #
+        B <-  sum(pack3>j) #
+        
+        #-------------------
+        if( i != j) {
+          
+          x=max(A,B)
+          r[mid,j]<-x
+          
+        }
+        #-------------------
+      }
+      #---------------------------
+      
+      #------------------------------------------
+      
+      
+    } else if ( card1 == i)     { # now if the initial card that we threw away is == the middle card
+      
+      for (j in (1):(i-1)) {  # work on the cards that are lower, it doesnt matter really
+        
+        A <-  sum(pack3<j) #
+        B <-  sum(pack3>j) #
+        
+        #-------------------
+        if( i != j) {
+          
+          x=max(A,B)
+          r[mid,j]<-x
+          
+        }
+        #-------------------
+      }
+      #---------------------------
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #------------------------------------------------
+    
+  }
+  #------------------------------------------
+  ################end middle card
+  
+  ### now we assess the impact of the first card being >=8
+  
+  
+  step <-  (section1+2):pack.size  #%%%%%%%%%%%%%%%%%%%%%%%%%%%change
   
   for (i in step) {   # first card
     
@@ -130,9 +222,9 @@ pycr <- function( pack.size=13, card1=11 ) {
 
 
 # throw away card first card and replace randomly, the analytical prob of winning 
-for(i in 1:n){
+for(i in 1:13){
   cat(paste0("We remove and replace card ",print(i),"\n"))
-  pycr(pack.size=n,card1=i)
+  pycr(pack.size=13,card1=i)
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -140,6 +232,12 @@ for(i in 1:n){
 pycr(pack.size=10, card1=4)
 pycr(pack.size=5, card1=3)
 
+pycr(pack.size=13, card1=1)
+pycr(pack.size=13, card1=4)
+pycr(pack.size=13, card1=2)
+pycr(pack.size=13, card1=3)
+pycr(pack.size=13, card1=4)
+pycr(pack.size=13, card1=5)
 pycr(pack.size=13, card1=6)
 pycr(pack.size=13, card1=7)
 pycr(pack.size=13, card1=8)
@@ -148,25 +246,5 @@ pycr(pack.size=13, card1=10)
 pycr(pack.size=13, card1=11)
 pycr(pack.size=13, card1=12)
 pycr(pack.size=13, card1=13)
-
-# 
-# # work on numerators
-# A <- 4*rowSums(r[,-card1], na.rm=TRUE)
-# B <- 3*r[,card1]
-# num <-  rowSums(cbind(A,B),na.rm=TRUE)
-# 
-# den1 = (n*4)-2 
-# den2 = (n*4)-3
-# den <- den1*den2 # rep(den1*den2, pack.size)
-# 
-# w1 <- as.vector(table(pack2))
-# w2 <- length(pack2) #rep(length(pack2), pack.size)# weights
-#  
-# # here is the answer as a fraction
-# numerator <- sum(num*w1)
-# denominator <- den*w2
-#  
-# print(MASS::fractions(numerator/denominator))
-
 
 
