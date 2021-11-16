@@ -44,7 +44,7 @@ tmpfun <- function(card1=NULL, n=13) {
       H2=NA
     } 
     
-  } else {
+  } else { 
     
     H2=NA # need this so we always populate H2 L2
     L2=NA

@@ -223,7 +223,7 @@ pycr <- function( pack.size=13, card1=8 ) {
   # 
   # denominator<- den*den2
   # 
-  # res <- numerator/denominator
+  # res <- numerator/denominator 
   #---------------------------------
   
   

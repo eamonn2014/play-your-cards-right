@@ -11,7 +11,7 @@
  # for an 8 we should guess randomly as there are the same number of higher valued cards as lower valued cards
  # so always guessing higher has the same effect, expecting to be correct 50% of the time.
    
- rm(list=ls())
+ rm(list=ls()) 
  
  pack <- rep(2:14, times=4)  # a proper deck of cards
  
