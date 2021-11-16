@@ -1,4 +1,5 @@
-
+# play your card right, checked only for n=13 cards in a suit, and one pack of cards.
+# Only will work for odd number of cards in a suit 
  
 
 pycr <- function( pack.size=13, card1=8 ) {
@@ -183,7 +184,7 @@ pycr <- function( pack.size=13, card1=8 ) {
   B <- A*w   # adjust using weight, the probability of the firs card being selected
   print( sum(B), digits=10)
   
-  ##pront as fraction 
+  ##print as fraction 
   
   
   # work on numerators
@@ -198,10 +199,36 @@ pycr <- function( pack.size=13, card1=8 ) {
   w1 <- as.vector(table(pack2))
   w2 <- length(pack2) #rep(length(pack2), pack.size)# weights
   
+  nu <- num*w1
   # here is the answer as a fraction
-  numerator <- sum(num*w1)
+  numerator <- sum(nu)
   denominator <- den*w2
   
+  #--------------------------
+  # A <- rowSums(r[,-card1], na.rm=TRUE)*4
+  # 
+  # B <- r[,card1]*3
+  # 
+  # num <- rowSums(cbind(A,B),na.rm=TRUE)
+  # 
+  # n <- pack.size*4
+  # 
+  # den <-   (n-2)*(n-3)
+  # 
+  # chances <- as.vector(table(pack2))
+  # 
+  # den2 <- n-1
+  # 
+  # numerator <- sum(num*chances, na.rm=TRUE)
+  # 
+  # denominator<- den*den2
+  # 
+  # res <- numerator/denominator
+  #---------------------------------
+  
+  
+  
+  print(nu)
   print(MASS::fractions(numerator/denominator))
 }
 
@@ -213,9 +240,9 @@ for(i in 1:13){
 }
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-pycr(pack.size=10, card1=4)
-pycr(pack.size=5, card1=3)
+## odd cards only............
+# pycr(pack.size=10, card1=4)
+# pycr(pack.size=5, card1=3)
 
 pycr(pack.size=13, card1=1)
 pycr(pack.size=13, card1=4)
