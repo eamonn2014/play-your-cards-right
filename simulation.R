@@ -18,9 +18,16 @@ tmpfun <- function(card1=NULL, n=13) {
   # --------------------------------
   # Here is the engine!
   # 2--------------------------------Guess card2 
-  
+   mid <- ceiling(n/2)
+   #remove first card after we have ssen it
+   # x <- which(pack2==hand[1])[1]  
+   # pack3 <- pack2[-x] 
+   # 
+   
   # if the first card is <8 we should guess higher, record if we are correct or not.
-  if (hand[1] <  ceiling(n/2) ) { 
+  #if ((hand[1] <  mid ) | (hand[1] == mid & (sum(pack3<mid) < sum(pack3>mid)))	)			
+    
+   if (hand[1] <  mid )  	{
     H1 <- hand[2] > hand[1]   
     L1=NA
   }  else { 
@@ -35,7 +42,7 @@ tmpfun <- function(card1=NULL, n=13) {
   if (isTRUE(H1)|isTRUE(L1)) { 
     # if the 2nd card is <9 we would guess higher, record if we are correct of not.
     
-    if (hand[2] < ceiling(n/2) ) { 
+    if (hand[2] < mid ) { 
       H2 <- hand[3] > hand[2]  
       L2=NA
     }  else { 
@@ -60,7 +67,31 @@ tmpfun <- function(card1=NULL, n=13) {
   
   return(list(ret) )  # output the information
   
+  
+  
 }
+
+ 
+
+# managing the results...this seems like it could be shortened
+calc.prob <- function(result ) {
+  x <- unlist(result)
+  xx <-  as.data.frame(cbind(result=data.frame(x), test =names(x)))
+  xx$id <- ave(xx$test ,xx$test ,  FUN = seq_along)   
+  require(tidyverse)
+  z <- xx %>% spread(test, x)
+  apply(z[,2:5],2,mean, na.rm=T)  
+  
+  zz <- z[,2:5]
+  zz <- zz*1  
+  zz$card2 <- rowSums(zz[,c("H1", "L1")], na.rm=TRUE)  # any win here is counted
+  zz$card3 <- rowSums(zz[,c("H2", "L2")], na.rm=TRUE)  # any win here is counted
+  zz$card23 <- rowSums(zz[,c("card2", "card3")], na.rm=TRUE) # both have to be guessed correctly to win the game
+  y <-  zz$card23
+  length(y[y==2])/sims   # proportion of times we win 
+}
+
+
 
 # 5 ---------------------------run the simulations and manage the output
 # three choices enter "3 random" and 3 cards are chosen at random to play the game . expect 50%
@@ -69,23 +100,20 @@ tmpfun <- function(card1=NULL, n=13) {
 # enter 0. A random first card always change.50%?
 # enter 99. play the game optimally changing on cards 5:11 ~ 55%
 sims <- 1000000
+sims <- 500000
 set.seed(124142)
- 
-result <- replicate(sims, tmpfun(card1=-7, n=13))
+  
 
+result <- replicate(sims, tmpfun(card1=-1, n=5))
+calc.prob(result)
+result <- replicate(sims, tmpfun(card1=-2, n=5))
+calc.prob(result)
+result <- replicate(sims, tmpfun(card1=-3, n=5))
+calc.prob(result)
+result <- replicate(sims, tmpfun(card1=-4, n=5))
+calc.prob(result)
+result <- replicate(sims, tmpfun(card1=-5, n=5))
+calc.prob(result)
 
-# managing the results...this seems like it could be shortened
-x <- unlist(result)
-xx <-  as.data.frame(cbind(result=data.frame(x), test =names(x)))
-xx$id <- ave(xx$test ,xx$test ,  FUN = seq_along)   
-require(tidyverse)
-z <- xx %>% spread(test, x)
-apply(z[,2:5],2,mean, na.rm=T)  
-
-zz <- z[,2:5]
-zz <- zz*1  
-zz$card2 <- rowSums(zz[,c("H1", "L1")], na.rm=TRUE)  # any win here is counted
-zz$card3 <- rowSums(zz[,c("H2", "L2")], na.rm=TRUE)  # any win here is counted
-zz$card23 <- rowSums(zz[,c("card2", "card3")], na.rm=TRUE) # both have to be guessed correctly to win the game
-y <-  zz$card23
-length(y[y==2])/sims   # proportion of times we win 
+result <- replicate(sims, tmpfun(card1=-10, n=13))
+calc.prob(result)
