@@ -1,7 +1,7 @@
 
  
  # strategy if card less than 9 guess higher.
- # We prefer extreme card to start
+ # We prefer extreme card to start  
  # if first card 5	6	7	8	9	10 11 ask to replace as there are more extreme cards than non extreme.
  # eg if your card is a jack (11), there are 1,2,3 and 12,13,14 which are better, so 6 better and only 5 cards same or less extreme 
  # 6,7,8,9,10 
@@ -124,9 +124,10 @@
   # enter 0. A random first card always change.50%?
   # enter 99. play the game optimally changing on cards 5:11 ~ 55%
    sims <- 1000000
+   sims <- 50000
    set.seed(124142)
-   result <- replicate(sims, tmpfun(card1="3 random")) # 
-   result <- replicate(sims, tmpfun(card1= 11)) # 
+ #  result <- replicate(sims, tmpfun(card1="3 random")) # 
+  # result <- replicate(sims, tmpfun(card1= 11)) # 
    result <- replicate(sims, tmpfun(card1=-11))
    result <- replicate(sims, tmpfun(card1= 0)) 
    result <- replicate(sims, tmpfun(card1= 99))
