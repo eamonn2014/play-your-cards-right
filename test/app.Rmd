@@ -34,7 +34,7 @@ numericInput(inputId=("Decksize"),
                             value = 10, min=1,max=101, step=1)
                 
       numericInput(inputId=("sims"),   
-                            label = c("No of simulation"), 
+                            label = c("No of simulations"), 
                             value = 1000, min=1000,max=1000000, step=1000)
                 
 
@@ -486,18 +486,10 @@ calc.prob <- function(result ) {
 
 
 
-renderPrint({   
-    
- 
-    "Simulation"
-    
-    
-})
-
 renderPrint({
  
     result <- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))
-  print(paste0("Swapping ",input$swap," Probability of winning ",calc.prob(result)))
+  print(paste0("If we simulate swapping a card of value ",input$swap," the probability of winning is approximated to be ",calc.prob(result)))
 
     
     
