@@ -1,52 +1,54 @@
 
 
+
 rm(list=ls())
- 
-# 1) 3 random cards, all need to be guessed correctly from a deck of 52
-# 2) you are given a card and then 2 random cards need to both be guessed correctly
-# 3) swap given card for a random, all need to be guessed correctly from a deck of 51
+
+# 1) 3 random cards, all need to be guessed correctly from a deck of size x
+# 2) swap given card for a random, all need to be guessed correctly from a deck of 51
 
 tmpfun <- function(card1=NULL, n=13) {
-  
   
   pack=rep(1:n, times=4)
   card1 <- abs(card1)
   x <- which(pack==card1)[1]                    # identify card location in pack, the 1st 
-  pack2 <- pack[-x]                             # remove from pack 1 card of value that is given to us  
+  pack2 <- pack[-x]                             # remove from pack 1 card of value that is given to us 
+  
   hand <- c(sample(pack2, 3, replace=F) )       # select 3 random cards, deck must be missing given card (N=19)
   
   # --------------------------------
-  # Here is the engine!
   # 2--------------------------------Guess card2 
-   mid <- ceiling(n/2)
-   #remove first card after we have ssen it
-   # x <- which(pack2==hand[1])[1]  
-   # pack3 <- pack2[-x] 
-   # 
+ 
+  #remove first card after we have seen it
+    x <- which(pack2==hand[1])[1]  
+    pack3 <- pack2[-x] 
+
+     A <- sum(hand[1] < pack3) # count the cards > first card
+     B <- sum(hand[1] > pack3) # count the cards < first card
    
-  # if the first card is <8 we should guess higher, record if we are correct or not.
-  #if ((hand[1] <  mid ) | (hand[1] == mid & (sum(pack3<mid) < sum(pack3>mid)))	)			
-    
-   if (hand[1] <  mid )  	{
-    H1 <- hand[2] > hand[1]   
+    if (A>B )  	{             # if there are more cards greater than the first card in our hand guess higher
+    H1 <- hand[2] > hand[1]   # check if our guess is correct
     L1=NA
-  }  else { 
-    # if the first card is not <9 we should guess lower, record if TRUE (or FALSE if we are wrong).
-    L1 <- hand[2] < hand[1]   
+  }  else {  # if we guess lower count if we correct!
+    L1 <- hand[2] < hand[1]    # check if our guess is correct
     H1=NA
   }
   # --------------------------------
-  
   # 3--------------------------------after guessing card 2 value relative to card1 correctly we proceed
   
   if (isTRUE(H1)|isTRUE(L1)) { 
-    # if the 2nd card is <9 we would guess higher, record if we are correct of not.
     
-    if (hand[2] < mid ) { 
+    # now we have seen the second card remove it from pack 
+    x <- which(pack3==hand[2])[1]  
+    pack4 <- pack3[-x] 
+    
+    # as before 
+    A <- sum(hand[2] < pack4)  # count the cards > second card
+    B <- sum(hand[2] > pack4)  # count the cards < second card
+    
+    if (A>B )  	 {    # assess as before
       H2 <- hand[3] > hand[2]  
       L2=NA
     }  else { 
-      # if the 2nd card is not <9 we would guess lower, record if TRUE (or FALSE if we are wrong).
       L2 <- hand[3] < hand[2]  
       H2=NA
     } 
@@ -66,14 +68,10 @@ tmpfun <- function(card1=NULL, n=13) {
   ret$L2  = L2 # L2 after correctly guessing 2nd card, prop of 2nd cards that are > 9 and card 3 is of lesser value than card 2
   
   return(list(ret) )  # output the information
-  
-  
-  
-}
+ }
 
- 
 
-# managing the results...this seems like it could be shortened
+# function to manage the results...this seems like it could be shortened
 calc.prob <- function(result ) {
   x <- unlist(result)
   xx <-  as.data.frame(cbind(result=data.frame(x), test =names(x)))
@@ -99,21 +97,33 @@ calc.prob <- function(result ) {
 # enter a negative integer between 1 and 14. That is the first card you always change. Enter -11 for Question 2.  %50?
 # enter 0. A random first card always change.50%?
 # enter 99. play the game optimally changing on cards 5:11 ~ 55%
-sims <- 1000000
-sims <- 500000
-set.seed(124142)
+
+  set.seed(124142)
+  
+  for(i in 1:13) {
+    sims <- 500000
+    result <- replicate(sims, tmpfun(card1=-i, n=13))
+  print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
+  }
+  
+  for(i in 1:3) {
+    sims <- 500000
+    result <- replicate(sims, tmpfun(card1=-i, n=3))
+    print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
+  }
+  
+  
+  for(i in 1:5) {
+    sims <- 500000
+    result <- replicate(sims, tmpfun(card1=-i, n=5))
+    print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
+  }
   
 
-result <- replicate(sims, tmpfun(card1=-1, n=5))
-calc.prob(result)
-result <- replicate(sims, tmpfun(card1=-2, n=5))
-calc.prob(result)
-result <- replicate(sims, tmpfun(card1=-3, n=5))
-calc.prob(result)
-result <- replicate(sims, tmpfun(card1=-4, n=5))
-calc.prob(result)
-result <- replicate(sims, tmpfun(card1=-5, n=5))
-calc.prob(result)
 
-result <- replicate(sims, tmpfun(card1=-10, n=13))
-calc.prob(result)
+
+
+
+
+
+
