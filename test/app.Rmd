@@ -1,136 +1,67 @@
 ---
-title: "Play Your Cards Right Probability"
-author: Eamonn O'Brien
+title: "Play Your Cards Right Probability :"
+author: "What a lovely audience! You're so much better than last week's."
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
-    vertical_layout: scroll
+    vertical_layout: fill
     social: menu
     source_code: embed
 runtime: shiny
 ---
 
-```{r global, include=FALSE}
-
-library(Hmisc)
-library(plotly)
-library(ggplot2)
-
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
 ```
-
-
-Column {.sidebar}
------------------------------------------------------------------------
-
-```{r}
-
- br()
-numericInput(inputId=("Decksize"),  
-             label = c("No of cards in each suit in deck"), 
-             value = 13, min=3,max=101, step=2)
-
-               numericInput(inputId=("swap"),   
-                            label = c("Reject this for another random card"), 
-                            value = 10, min=1,max=101, step=1)
-                
-      numericInput(inputId=("sims"),   
-                            label = c("No of simulations"), 
-                            value = 1000, min=1000,max=1000000, step=1000)
-                
-
-```
-
-### Info
-
-*Purpose*:   
-In the TV program Play Your Cards Right players are dealt one card face up and several cards face down from a standard pack of 52 cards. They then have to guess whether the next card
-is higher or lower than the overturned card. Get it right and
-the game continues. Get it wrong, or turn over the same card of a
-different suit, and the game ends.
-
-Here we limit the game to three cards. We examine the scenario in which the player always keeps the first card and the scenario in which the player always replaces the first card dealt. Instead of using a standard playing card deck we use the numbers 1 to 13 and have 4 copies to mimic a deck of cards.
-
-The question is, what is the probability that both your guesses are correct? 
-
-For example, a Jack is represented by card value 10. There are then 9x4=36 cards lower than the
-Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ≈ 70.6%.
-
-
-*Method*:  
-An explanation for the scenario in which a card is dealt and not switching is explained [here](https://www.google.com "Google's Homepage")
-
-We expand upon this for our question, and evaluate for all possible scenarios for the first card (remembering we have thrown a particular card away).    
-
-            
-               
-
-
-
-Column 
------------------------------------------------------------------------
-### Should you swap the swap the first card your are dealt?
-
-*Purpose*:   
-In the TV program Play Your Cards Right players are dealt one card face up and several cards face down from a standard pack of 52 cards. They then have to guess whether the next card
-is higher or lower than the overturned card. Get it right and
-the game continues. Get it wrong, or turn over the same card of a
-different suit, and the game ends.
-
-Here we limit the game to three cards and always replace the first card we are dealt. 
-Instead of using a standard playing card deck we use the numbers 1 to 13 and have 4 copies to mimic a deck of cards.
-
-We are dealt a card of your choosing [2nd box on left] and always discard it to replace it with a random card and two mystery cards. The question is what is the probability that both your guesses are correct. 
-
-For example, a Jack is represented by card value 10. There are then 9x4=36 cards lower than the
-Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ≈ 70.6%.
-
-
-*Method*:  
-An explanation for the scenario in which a card is dealt and not switching is explained [here](https://www.significancemagazine.com/culture/706-probability-puzzle-higher-or-lower "").  We expand upon this for our question, and evaluate for all possible scenarios for the first card (remembering we have thrown a particular card away).    
-
-           
 
 ```{r}
 
 
-#################------------------------------------------
 
-pycr1 <- function( pack.size=13, card1=10 ) {
-  ###########################################analytical keeping dealt card
+
+#-------------------------------------------
+#-----------------------analytical function delivers prob of guessing 2 mystery cards
+#-----------------------The first card that we observe cannot be swapped
+#-----------------------we can pick the deck size and first card value 
+#-------------------------------------------
+
+
+pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in regular pack, aces high
   
+  ########################################### analytical prob of winning keeping 1st dealt card
 
   pack <- rep(1:pack.size, times=4)             # regular pack of cards aces high
   x <- which(pack==card1)[1]                    # identify card location in pack, the 1st 
-  pack2 <- pack[-x]     
+  pack2 <- pack[-x]                             # remove this card from pack
   
  
-  r <- matrix(NA, ncol=pack.size) # capture the  P(guessing correctly)
+  r <- matrix(NA, ncol=pack.size) # row matrix to capture the opportunities for guessing correctly
   
-  step <- 1:pack.size  # go through what happens if the forst card is 2:7
+  step <- 1:pack.size  # go through what happens for each possible 2nd card
   
-  for (i in step) {                            # lok at 2,3,4...7
-  
-      
-      A <-  sum(pack2<i) #  
-      B <-  sum(pack2>i) #
+  for (i in step) {                           
+    
+      A <-  sum(pack2<i)  # no of cards < than our first card in pack
+      B <-  sum(pack2>i)  # no of cards > than our first card in pack
    
-      if( i != card1) {
+      if( i != card1) {  # if 2nd card same value as first card we lose
         
-        # assess if we guess higher lower or 50:50 
+        # put all opportunities into matrix
         
         x=max(A,B)
 
         r[1,i]<-x    # add to matrix
         
-      }
+      }  # optimal decision based on value of first card
       
-      if (card1 < median(1:pack.size)) {
+      if (card1 < median(1:pack.size)) { # assess if we should guess higher lower  
       
        r[1:(card1)] <- NA
       
-      }else{
+      } else {
         
-      r[(card1):pack.size] <- NA
+       r[(card1):pack.size] <- NA
         
       }
        
@@ -152,47 +83,51 @@ pycr1 <- function( pack.size=13, card1=10 ) {
   numerator <- numer
   denominator <- denom
   
-  print(MASS::fractions(numerator/denominator))
+  B <- print(MASS::fractions(numerator/denominator))
+  
+  
+  
+  return(list(A,B))
+  
 }
 
 
-#############################----------------------------
-
-
-
+#-------------------------------------------
+#-----------------------analytical function delivers prob of guessing 2 mystery cards
+#-----------------------The first card that we observe is always swapped
+#-----------------------we can pick the deck size and first card value 
+#-------------------------------------------
 
  
     
     pycr <- function( pack.size=13, card1=8 ) {
-  ###########################################analytical removing JACK
+  ########################################### analytical  
+ 
   
-  # pack.size<-n<-13
-  # card1=10
-  # 
-  
-  pack <- rep(1:pack.size, times=4)                    # regula tpack of cards aces high
+  pack <- rep(1:pack.size, times=4)             # pack of cards aces high
   x <- which(pack==card1)[1]                    # identify card location in pack, the 1st 
   pack2 <- pack[-x]                             # remove card
+   
+  # rows are the 1st card, we look at all 1:n as it is randomly chosen
+  # columns are the counts , suits don't not matter
   
+  r <- matrix(NA, pack.size,pack.size) # capture the opportunities for guessing correctly
   
-  # rv <- 2:14
-  # sapply(rv, function(f) sum(pack3<f))
-  
-  # rows are the 1st card, we look at all 2:14 as it is randomly chosen
-  # columns are the counts , suits dont not matter
-  r <- matrix(NA, pack.size,pack.size) # capture the  P(guessing correctly)
+  #------------------------------------------------------------------------------------
+  # section to work on below median card value
+  #------------------------------------------------------------------------------------
   
   section1 <- floor(pack.size/2)
-  step <- 1:section1  # go through what happens if the forst card is 2:7
+  step <- 1:section1  # go through what happens if the first card is 1: 
   
-  for (i in step) {                            # lok at 2,3,4...7
+  for (i in step) {                            # look at 1,2,3,4...median-1
     
     x <- which(pack2==i)[1]                    # remove first card
     pack3 <- pack2[-x]  
     
     # ---------------------------------
     # if we have a 2 we should guess higher
-    # loop starts at i so we go along the ith row indenting 1 each ime
+    # loop starts at i so we go along the ith row indenting 1 each time
     for (j in i:pack.size) {             # assess impact of guess, 14 here as we start at 2
       
       # if we have a 2 for example we should guess the next car is higher 
@@ -203,11 +138,9 @@ pycr1 <- function( pack.size=13, card1=10 ) {
       # print(A);print(B)
       if( i != j) {
         
-        # assess if we guess higher lower or 50:50 
-        
-        x=max(A,B)
-        #  print(x)
-        
+      # assess if we guess higher lower or 50:50 
+       x=max(A,B)
+      
         r[i,j]<-x    # add to matrix
         
       }
@@ -221,7 +154,8 @@ pycr1 <- function( pack.size=13, card1=10 ) {
   
   
   
-  ################start middle card
+  ################work on middle card start middle card
+  # 
   # #------------------------------------------
   # # middle card
   mid <-  median(1:pack.size)  # when first card is the middle card
@@ -295,7 +229,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {
   #------------------------------------------
   ################end middle card
   
-  ### now we assess the impact of the first card being >=8
+  ### now we assess the impact of the first card being >=median
   
   
   step <-  (section1+2):pack.size  #%%%%%%%%%%%%%%%%%%%%%%%%%%%change
@@ -307,7 +241,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {
     
     
     # ---------------------------------
-    for (j in 1:i) {                    # 2 is the 1st column, i varies incraesing by 1 each time
+    for (j in 1:i) {                    # 2 is the 1st column, i varies increasing by 1 each time
       
       A <-  sum(pack3<j) #
       B <-  sum(pack3>j) #
@@ -319,7 +253,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {
         
       }
       
-      if (j==max(step)) {print(r)}
+     # if (j==max(step)) {print(r)}
     }
     
     
@@ -344,7 +278,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {
   A <- numer/denom
   B <- A*w   # adjust using weight, the probability of the firs card being selected
   print( sum(B), digits=10)
-  
+  #prob <- B
   ##print as fraction 
   
   
@@ -386,15 +320,20 @@ pycr1 <- function( pack.size=13, card1=10 ) {
   # 
   # res <- numerator/denominator 
   #---------------------------------
+  D <- NULL
+  A <- NULL
   
-  
-  
+  A <- numerator/denominator
   #print(nu)
-  print(MASS::fractions(numerator/denominator))
+D<-  print(MASS::fractions(numerator/denominator))
+  
+return(list(D,A))
+  
 }
    
-
-#-----------------------simulation
+#-------------------------------------------
+#-----------------------simulation function
+#-------------------------------------------
 
 
 simi <- function(card1=NULL, n=13) {
@@ -480,97 +419,426 @@ calc.prob <- function(result ) {
   length(y[y==2])/input$sims   # proportion of times we win 
 }
 
+```
 
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+
+br()
+numericInput(inputId=("Decksize"),  
+            # label = c("No of cards in each suit in deck"), 
+             
+              label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+               
+               "No of cards in each suit in deck") ,
+             
+             
+             value = 13, min=3,max=101, step=2)
+
+               numericInput(inputId=("swap"),   
+                              label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+               
+               "First card dealt") ,
+                            value = 10, min=1,max=101, step=1)
+                
+      numericInput(inputId=("sims"),   
+                        
+                       label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+               
+               "No of simulations") ,
+                            value = 1000, min=1000,max=1000000, step=1000) 
+
+```
+
+### 
+
+References:
+
+[Play Your Card Right](https://en.wikipedia.org/wiki/Play_Your_Cards_Right "")
+
+[Question](https://www.significancemagazine.com/culture/706-probability-puzzle-higher-or-lower"")
+
+[Partial solution](https://rss.onlinelibrary.wiley.com/doi/epdf/10.1111/1740-9713.01564 "")
 
  
 
+Column {data-width=300}
+-----------------------------------------------------------------------
 
+###  
+```{r}
 
-renderPrint({
- 
-    result <- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))
-  print(paste0("If we simulate swapping a card of value ",input$swap," the probability of winning is approximated to be ",calc.prob(result)))
+h5(htmlOutput("intro1")) 
+br()
+h5(htmlOutput("intro1a"))
+br()
+h5(htmlOutput("intro2"))  
+br()
+h5(htmlOutput("intro3"))  
 
-    
-    
-})
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
+ output$intro1 <- renderText({  # create interactive text t1
 
  
+    print(paste0(
+      
+       tags$span(style="color:blue;font-weight:bold;font-size: 20px;", 
+               
+               "Introduction")   ,
+      br(), 
+         br(), 
+          br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "In the 80's British TV show 'Play Your Cards Right' contestants were dealt one card face up and several cards face down from a standard pack of 52 cards. They then had to guess whether the next card is higher or lower than the overturned card. Guess right and
+the game continues. Guess wrong, or turn over the same value card of a different suit and the game is over. ") ,
+      
+       "."))
 
-renderPrint({   
-    
- 
-    "This is the probabilty of winning when we keep the card of the value entered in input box 2 and play optimially"
-    
-    
-})
+ })
 
-renderPrint({
-    
+ output$intro1a <- renderText({  # create interactive text t1
+
  
-    pycr1( pack.size=input$Decksize, card1=input$swap) 
-    
-    
-})
+    print(paste0(
+      
+    tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               " ")   ,
+      # br(),
+      # br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "
+Instead of using a standard playing card deck we use the numbers 1 to 13 (default) and have 4 copies to mimic a standard deck of playing cards.
+
+However, The app allows you to choose the first dealt card [middle box] and vary the number of cards in a suit - it must be an odd number [top box].  ") ,
+      
+       "."))
+ })
+
+ 
+  output$intro2 <- renderText({  # create interactive text t1
+
+ 
+    print(paste0(
+      
+    tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "")   ,
+      # br(),
+      # br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               " 
+
+Here the game is limited to three cards, the first card is revealed but there are also two mystery cards. We show what happens, both, when you replace the first card dealt (discarding this from the game) with another random card and play with the original dealt card. The question is what is the probability that both your guesses are correct?
+
+ .  ") ,
+      
+       "."))
+
+ })
+ 
+  output$intro3 <- renderText({  # create interactive text t1
+
+ 
+    print(paste0(
+      
+    tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "")   ,
+      # br(),
+      # br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               " 
+
+To get started, in a standard pack is dealt a Jack (in our app a Jack is represented by card value 10) we should guess lower because there are then 9 x 4 = 36 cards in a standard pack of cards that are lower than the Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ≈ 70.6%. However, we should if given the opportunity swap the Jack. This is because relative to the Jack there are 6 more extreme , so better cards, 2,3,4,Q,K and A, the cards 6,7,8,9,10 are worse in comparison to the Jack and the card 5 has the same chance of guessing the next card correct as the Jack.
+
+ ") ,
+      
+       "."))
+
+ })
+ 
+ 
+ 
+   output$intro4 <- renderText({  # create interactive text t1
+
+ 
+    print(paste0(
+      
+    tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "")   ,
+      br(),
+      br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               " 
+
+Instead of using a standard playing card deck we use the numbers 1 to 13 (default) and have 4 copies to mimic a standard deck of playing cards.
+
+However, The app allows you to choose the first dealt card [2nd box on left] and vary the number of cards in a suit - it must be an odd number.  ") ,
+      
+       "."))
+
+ })
+ 
  
 
-    
-renderPrint({
-    
  
-    "This is the probabilty of winning when we discard the card of value in entered input box 2, replace it with a random card and play optimially"
+   output$note <- renderText({  # create interactive text t1
+
+ 
+    print(paste0(
+
+    tags$span(style="color:blue;font-weight:bold;font-size: 20px;",
+
+               "Notes")   ,
+      br(),
+      br(),
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               " 
+
+When to swap is quite intuitive as explained in the introduction. It is interesting however, that if you were to swap your initial card regardless of its value (a bad idea if you want to win), the probability of winning is the same no matter what value the initial card is, with one exception, the middle card, this has an oh so very slight increase in the probability of winning relative to all the other cards. Observer this by comparing the red probabilities quoted above whilst varying the first card dealt. The simulation is not sensitive enough to reveal this, unless I presume you can perfrom a massive number of simulations. Have fun.") ,
+      
+       "."))
+
+ })
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+###  
+
+```{r}
+                                      
+
+                           
+ # h5(htmlOutput("text1"))      ## print text1
+ # 
+ #   #-------------
+ # 
+ #  output$text1 <- renderText({  # create interactive text t1
+ # 
+ #    result <- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))   # R code
+ #    
+ #    print(paste0(                                                               # text
+ #    
+ #    "Simulation is approximation to the analytical result but we do
+ #     it as a programming exercise. If we swap a the card of value "
+ #                 
+ #      , tags$span(style="color:blue;font-weight:bold;", input$swap) ,
+ #    
+ #    " in a pack of "
+ #    
+ #      , tags$span(style="color:blue;font-weight:bold;", input$Decksize) ,
+ #    
+ #    " in each suit for another random card the probability of winning is approximated to be "
+ #    
+ #      , tags$span(style="color:blue ;font-weight:bold;", calc.prob(result)) ,
+ #                   "
+ #      "))
+ # 
+ # })
+  
+ #-------------
+  
+
+h5(htmlOutput("text2"))      ## print text1
+h5(htmlOutput("text3"))      ## print text1
+h5(htmlOutput("text3a"))
+h5(htmlOutput("text4")) 
+ #-------------
+
+  output$text2 <- renderText({  # create interactive text t1
+
+     invisible(x <-pycr1( pack.size=input$Decksize, card1=input$swap))   # R code
     
+     x1 <- x[1][[1]]
+     x2 <- x[2][[1]]
     
-})
+    print(paste0(                                                               # text
+    
+    tags$span(style="color:blue;font-weight:bold;font-size: 20px;", 
+               
+               "Analytical probability - keep initial card")   ,
+      br(),
+      br(), 
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "The analytical probabilty of winning, guessing correctly if the next two mystery card values are higher or lower than the preceeding card, keeping the initial dealt card ") 
+      
+      , tags$span(style="color:blue;font-weight:bold;font-size: 20px;", input$swap) ,
      
+     
+        tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+     
+    ", in a pack with ")
+    
+      , tags$span(style="color:blue;font-weight:bold;font-size: 20px;", input$Decksize) ,
     
     
+        tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+    
+    " cards of each suit and play optimally (to maximise our chance of winning) is ")
+    
+      , tags$span(style="color:blue ;font-weight:bold;font-size: 20px;", x2) ,
+    
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;",
+               
+    " or ")
+    
+     , tags$span(style="color:red ;font-weight:bold;font-size: 20px;", x1) ,
+     ". "))
 
-renderPrint({
+ })
+
+
+  ###--------------------
+
+ output$text3 <- renderText({  # create interactive text t1
+
+     invisible(x <-pycr( pack.size=input$Decksize, card1=input$swap))   # R code
     
- 
-    pycr( pack.size=input$Decksize, card1=input$swap) 
+     x1 <- x[1][[1]]
+     x2 <- x[2][[1]]
+   
+    print(paste0(   
+       br(),# text
+     tags$hr(),
+        br(),
+    tags$span(style="color:blue;font-weight:bold;font-size: 20px;text-underline-position: under;", 
+               
+               "Analytical probability - swap initial card")   ,
+      br(),
+      br(), 
+   
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "The analytical probabilty of winning, guessing correctly if the next two mystery card values are higher or lower than the preceeding card, swapping the initial dealt card ") 
+      
+      , tags$span(style="color:blue;font-weight:bold;font-size: 20px;", input$swap) ,
+     
+     
+        tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+     
+    ", in a pack with ")
+    
+      , tags$span(style="color:blue;font-weight:bold;font-size: 20px;", input$Decksize) ,
     
     
-})
- 
+        tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+    
+    " cards of each suit and play optimally (to maximise our chance of winning) is ")
+    
+      , tags$span(style="color:blue ;font-weight:bold;font-size: 20px;", x1) ,
+    
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;",
+               
+    " or ")
+    
+     , tags$span(style="color:red ;font-weight:bold;font-size: 20px;", x2) ,
+    
+    
+                   ".
+      "))
+
+ })
+
+
+#--------------------------
+
+
+  ###--------------------
+
+ output$text3a <- renderText({  # create interactive text t1
+
+     result<- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))   # R code   # R code
+   
+    print(paste0(                                                               # text
+    
+    
+      br(),
+    
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+               "Just for kicks we use simulation to approximate this probability... ") ,
+
+    
+    tags$span(style="color:green ;font-weight:bold;font-size: 20px;", calc.prob(result)) ,
+    
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;",
+               
+    " ")
+    
+     , tags$span(style="color:red ;font-weight:bold;font-size: 20px;", ) ,
+    
+    
+                   ".
+      "))
+
+ })
+
+
+
+
+
+ output$text4 <- renderText({  # create interactive text t1
+
+     invisible(x <-pycr( pack.size=input$Decksize, card1=input$swap))   # R code
+    
+     x1 <- x[1][[1]]
+     x2 <- x[2][[1]]
+     
+     
+     invisible(s <-pycr1( pack.size=input$Decksize, card1=input$swap))   # R code
+    
+     s1 <- s[1][[1]]
+     s2 <- s[2][[1]]
+    
+     
+     if (x2  > s1) {action ="You should swap your card!"} else {action ="You should keep your card!"}
+    
+    print(paste0(                                                               # text
+    
+     tags$hr(),
+        br(),
+    tags$span(style="color:red;font-weight:bold; height: 50px; width: 100%; text-align:right; font-size: 20px;", 
+               
+               action)   ,
+
+    
+    
+                   ".
+      "))
+
+ })
+
+
 
 
 ```
 
-### Info
+###  
 
-*Purpose*:   
-In the TV program Play Your Cards Right players are dealt one card face up and several cards face down from a standard pack of 52 cards. They then have to guess whether the next card
-is higher or lower than the overturned card. Get it right and
-the game continues. Get it wrong, or turn over the same card of a
-different suit, and the game ends.
+```{r}
 
-Here we limit the game to three cards and always replace the first card we are dealt. 
-Instead of using a standard playing card deck we use the numbers 1 to 13 and have 4 copies to mimic a deck of cards.
+h5(htmlOutput("note")) 
 
-We are dealt a card of your choosing [2nd box on left] and always discard it to replace it with a random card and two mystery cards. The question is what is the probability that both your guesses are correct. 
-
-For example, a Jack is represented by card value 10. There are then 9x4=36 cards lower than the
-Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ≈ 70.6%.
-
-
-*Method*:  
-An explanation for the scenario in which a card is dealt and not switching is explained here. We expand upon this for our question, and evaluate for all possible scenarios for the first card (remembering we have thrown a particular card away).    
-
-
-*Notes*:  
