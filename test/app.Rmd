@@ -600,11 +600,11 @@ Imagine having been dealt a Jack, we should guess lower because there are then 9
                
                " 
 
-Instead of using a standard playing card deck we use the numbers 1 to 13 (default) and have 4 copies to mimic a standard deck of playing cards.
+Instead of using a standard playing card deck we use the numbers 1 to 13 (default) and have 4 copies to mimic the standard deck.
 
-However, The app allows you to choose the first dealt card [2nd box on left] and vary the number of cards in a suit - it must be an odd number. 
+However, the app also allows you to choose the first dealt card [2nd box on left] and vary the number of cards in a suit - it must be an odd number. 
 
-In this app a Jack is represented by the card value 10 when using 13 for the 'number of cards of each suit in deck' a regular deck of cards is created. Ignore the app for now and 
+In this app a Jack is represented by the card value 10 when using 13 for the 'number of cards of each suit in deck' a regular deck of cards is created. 
 
 ") ,
       
