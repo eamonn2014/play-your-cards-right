@@ -476,7 +476,7 @@ References:
 
 [Manual calculation](https://github.com/eamonn2014/play-your-cards-right/blob/master/card%20puzzle%20manual%20calculation.png)
 
-
+[52!](https://www.youtube.com/watch?v=SLIvwtIuC3Y&ab_channel=funstufffella)
 
 Column {data-width=300}
 -----------------------------------------------------------------------
@@ -637,6 +637,30 @@ Check out the R code and other links on the left, have fun.") ,
 
  })
  
+
+   output$note2 <- renderText({  # create interactive text t1
+
+ 
+    print(paste0(
+
+    tags$span(style="color:blue;font-weight:bold;font-size: 20px;",
+
+               "")   ,
+      # br(),
+      # br(),
+     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
+               
+              "P.S. as an aside there are 52! possible orders for a deck of 52 cards, see the last link.", 
+                      
+                      ) ,
+      
+ 
+       "."))
+ })
+ 
+
+
+
 #-------------------------------------------------------------------------------------------------------
 
 ```
@@ -823,4 +847,6 @@ h5(htmlOutput("text4"))
 ```{r}
 
 h5(htmlOutput("note")) 
+
+h5(htmlOutput("note2")) 
 
