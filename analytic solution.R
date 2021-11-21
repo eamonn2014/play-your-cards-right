@@ -1,37 +1,41 @@
-# play your card right, checked only for n=13 cards in a suit, and one pack of cards.
-# Only will work for odd number of cards in a suit 
- 
+
+
+#------------------------------------------------------------------------------------------------------
+#-----------------------analytical function delivers prob of guessing 2 mystery cards
+#-----------------------The first card that we observe is always swapped
+#-----------------------we can pick the deck size and first card value 
+#-----------------------inputs pack size and initial card value
+#------------------------------------------------------------------------------------------------------
+
+
 
 pycr <- function( pack.size=13, card1=8 ) {
-  ###########################################analytical removing JACK
+  ########################################### analytical  
   
-  # pack.size<-n<-13
-  # card1=10
-  # 
-  
-  pack <- rep(1:pack.size, times=4)                    # regula tpack of cards aces high
+  pack <- rep(1:pack.size, times=4)             # pack of cards aces high
   x <- which(pack==card1)[1]                    # identify card location in pack, the 1st 
   pack2 <- pack[-x]                             # remove card
   
+  # rows are the 1st card, we look at all 1:n as it is randomly chosen
+  # columns are the counts , suits don't not matter
   
-  # rv <- 2:14
-  # sapply(rv, function(f) sum(pack3<f))
+  r <- matrix(NA, pack.size,pack.size) # capture the opportunities for guessing correctly
   
-  # rows are the 1st card, we look at all 2:14 as it is randomly chosen
-  # columns are the counts , suits dont not matter
-  r <- matrix(NA, pack.size,pack.size) # capture the  P(guessing correctly)
+  #------------------------------------------------------------------------------------
+  # section to work on below median card value
+  #------------------------------------------------------------------------------------
   
   section1 <- floor(pack.size/2)
-  step <- 1:section1  # go through what happens if the forst card is 2:7
+  step <- 1:section1  # go through what happens if the first card is 1: 
   
-  for (i in step) {                            # lok at 2,3,4...7
+  for (i in step) {                            # look at 1,2,3,4...median-1
     
     x <- which(pack2==i)[1]                    # remove first card
     pack3 <- pack2[-x]  
     
     # ---------------------------------
     # if we have a 2 we should guess higher
-    # loop starts at i so we go along the ith row indenting 1 each ime
+    # loop starts at i so we go along the ith row indenting 1 each time
     for (j in i:pack.size) {             # assess impact of guess, 14 here as we start at 2
       
       # if we have a 2 for example we should guess the next car is higher 
@@ -43,9 +47,7 @@ pycr <- function( pack.size=13, card1=8 ) {
       if( i != j) {
         
         # assess if we guess higher lower or 50:50 
-        
         x=max(A,B)
-        #  print(x)
         
         r[i,j]<-x    # add to matrix
         
@@ -59,8 +61,8 @@ pycr <- function( pack.size=13, card1=8 ) {
   
   
   
-  
-  ################start middle card
+  ################work on middle card start middle card
+  # 
   # #------------------------------------------
   # # middle card
   mid <-  median(1:pack.size)  # when first card is the middle card
@@ -105,9 +107,7 @@ pycr <- function( pack.size=13, card1=8 ) {
         #-------------------
       }
       #---------------------------
-      
       #------------------------------------------
-      
       
     } else if ( card1 == i)     { # now if the initial card that we threw away is == the middle card
       
@@ -127,17 +127,15 @@ pycr <- function( pack.size=13, card1=8 ) {
       }
       #---------------------------
     }
-    
-      #------------------------------------------------
-    
+    #------------------------------------------------
   }
   #------------------------------------------
   ################end middle card
   
-  ### now we assess the impact of the first card being >=8
+  ### now we assess the impact of the first card being >=median
   
   
-  step <-  (section1+2):pack.size  #%%%%%%%%%%%%%%%%%%%%%%%%%%%change
+  step <-  (section1+2):pack.size  #
   
   for (i in step) {   # first card
     
@@ -146,7 +144,7 @@ pycr <- function( pack.size=13, card1=8 ) {
     
     
     # ---------------------------------
-    for (j in 1:i) {                    # 2 is the 1st column, i varies incraesing by 1 each time
+    for (j in 1:i) {                    # 2 is the 1st column, i varies increasing by 1 each time
       
       A <-  sum(pack3<j) #
       B <-  sum(pack3>j) #
@@ -158,7 +156,7 @@ pycr <- function( pack.size=13, card1=8 ) {
         
       }
       
-      if (j==max(step)) {print(r)}
+      # if (j==max(step)) {print(r)}
     }
     
     
@@ -183,7 +181,7 @@ pycr <- function( pack.size=13, card1=8 ) {
   A <- numer/denom
   B <- A*w   # adjust using weight, the probability of the firs card being selected
   print( sum(B), digits=10)
-  
+  #prob <- B
   ##print as fraction 
   
   
@@ -225,11 +223,15 @@ pycr <- function( pack.size=13, card1=8 ) {
   # 
   # res <- numerator/denominator 
   #---------------------------------
+  D <- NULL
+  A <- NULL
   
+  A <- numerator/denominator
+  #print(nu)
+  D<-  print(MASS::fractions(numerator/denominator))
   
+  return(list(D,A))
   
-  print(nu)
-  print(MASS::fractions(numerator/denominator))
 }
 
 
@@ -243,6 +245,13 @@ for(i in 1:13){
 ## odd cards only............
 # pycr(pack.size=10, card1=4)
 # pycr(pack.size=5, card1=3)
+
+pycr(pack.size=5, card1=1)
+pycr(pack.size=5, card1=2)
+pycr(pack.size=5, card1=3)
+pycr(pack.size=5, card1=4)
+pycr(pack.size=5, card1=5)
+ 
 
 pycr(pack.size=13, card1=1)
 pycr(pack.size=13, card1=4)
@@ -261,3 +270,5 @@ pycr(pack.size=13, card1=13)
 
 pycr(pack.size=5, card1=4)
 pycr(pack.size=5, card1=3)
+
+pycr(pack.size=3, card1=1)

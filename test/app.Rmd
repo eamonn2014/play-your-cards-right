@@ -17,14 +17,14 @@ library(shiny)
 
 ```{r}
 
+# 3 functions are defined
 
-
-
-#-------------------------------------------
-#-----------------------analytical function delivers prob of guessing 2 mystery cards
+#-----------------------------------------------------------------------------------------------------
+#-----------------------analytical function that delivers prob of guessing 2 mystery cards
 #-----------------------The first card that we observe cannot be swapped
 #-----------------------we can pick the deck size and first card value 
-#-------------------------------------------
+#-----------------------inputs pack size and initial card value
+#------------------------------------------------------------------------------------------------------
 
 
 pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in regular pack, aces high
@@ -85,25 +85,26 @@ pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in
   
   B <- print(MASS::fractions(numerator/denominator))
   
-  
-  
   return(list(A,B))
   
 }
+#------------------------------------------------------------------------------------------------------
+# end
+#------------------------------------------------------------------------------------------------------
 
 
-#-------------------------------------------
+#------------------------------------------------------------------------------------------------------
 #-----------------------analytical function delivers prob of guessing 2 mystery cards
 #-----------------------The first card that we observe is always swapped
 #-----------------------we can pick the deck size and first card value 
-#-------------------------------------------
+#-----------------------inputs pack size and initial card value
+#------------------------------------------------------------------------------------------------------
 
  
     
-    pycr <- function( pack.size=13, card1=8 ) {
+  pycr <- function( pack.size=13, card1=8 ) {
   ########################################### analytical  
  
-  
   pack <- rep(1:pack.size, times=4)             # pack of cards aces high
   x <- which(pack==card1)[1]                    # identify card location in pack, the 1st 
   pack2 <- pack[-x]                             # remove card
@@ -152,8 +153,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in
   }
   
   
-  
-  
+
   ################work on middle card start middle card
   # 
   # #------------------------------------------
@@ -200,10 +200,8 @@ pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in
         #-------------------
       }
       #---------------------------
-      
       #------------------------------------------
-      
-      
+
     } else if ( card1 == i)     { # now if the initial card that we threw away is == the middle card
       
       for (j in (1):(i-1)) {  # work on the cards that are lower, it doesnt matter really
@@ -222,9 +220,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in
       }
       #---------------------------
     }
-    
       #------------------------------------------------
-    
   }
   #------------------------------------------
   ################end middle card
@@ -232,7 +228,7 @@ pycr1 <- function( pack.size=13, card1=10 ) {  # card value 10 is like a jack in
   ### now we assess the impact of the first card being >=median
   
   
-  step <-  (section1+2):pack.size  #%%%%%%%%%%%%%%%%%%%%%%%%%%%change
+  step <-  (section1+2):pack.size  #
   
   for (i in step) {   # first card
     
@@ -329,11 +325,18 @@ D<-  print(MASS::fractions(numerator/denominator))
   
 return(list(D,A))
   
-}
-   
-#-------------------------------------------
-#-----------------------simulation function
-#-------------------------------------------
+  }
+#------------------------------------------------------------------------------------------------------
+# end
+#------------------------------------------------------------------------------------------------------
+
+
+#------------------------------------------------------------------------------------------------------
+#-----------------------simulation function delivers prob of guessing 2 mystery cards
+#-----------------------The first card that we observe is always swapped
+#-----------------------we can pick the deck size and first card value 
+#-----------------------inputs pack size and initial card value
+#------------------------------------------------------------------------------------------------------
 
 
 simi <- function(card1=NULL, n=13) {
@@ -418,6 +421,10 @@ calc.prob <- function(result ) {
   y <-  zz$card23
   length(y[y==2])/input$sims   # proportion of times we win 
 }
+#------------------------------------------------------------------------------------------------------
+# end
+#------------------------------------------------------------------------------------------------------
+
 
 ```
 
@@ -427,29 +434,22 @@ Column {.sidebar}
 
 ```{r}
 
-br()
-numericInput(inputId=("Decksize"),  
-            # label = c("No of cards in each suit in deck"), 
-             
-              label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
-               
-               "No of cards of each suit in deck") ,
-             
-             
-             value = 13, min=3,max=101, step=2)
+              br()
+
+              numericInput(inputId=("Decksize"),  
+                  label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+                  "No of cards of each suit in deck") ,
+                  value = 13, min=3,max=101, step=2)
 
                numericInput(inputId=("swap"),   
-                              label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
-               
-               "First card dealt") ,
-                            value = 10, min=1,max=101, step=1)
+                      label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+                      "First card dealt") ,
+                      value = 10, min=1,max=101, step=1)
                 
-      numericInput(inputId=("sims"),   
-                        
+                numericInput(inputId=("sims"),   
                        label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
-               
-               "No of simulations") ,
-                            value = 1000, min=1000,max=1000000, step=1000) 
+                        "No of simulations") ,
+                         value = 1000, min=1000,max=1000000, step=1000) 
 
 ```
 
@@ -457,12 +457,19 @@ numericInput(inputId=("Decksize"),
 
 References:
 
-[Play Your Card Right](https://en.wikipedia.org/wiki/Play_Your_Cards_Right "")
+[Play Your Cards Right](https://en.wikipedia.org/wiki/Play_Your_Cards_Right "")
 
 [Question](https://www.significancemagazine.com/culture/706-probability-puzzle-higher-or-lower"")
 
 [Partial solution](https://rss.onlinelibrary.wiley.com/doi/epdf/10.1111/1740-9713.01564 "")
 
+ function1
+ 
+ function2
+ 
+ function3
+ 
+ 
  
 
 Column {data-width=300}
@@ -471,6 +478,8 @@ Column {data-width=300}
 ###  
 ```{r}
 
+#-------------------------------------------------------------------------------------------------------
+
 h5(htmlOutput("intro1")) 
 br()
 h5(htmlOutput("intro1a"))
@@ -478,6 +487,8 @@ br()
 h5(htmlOutput("intro2"))  
 br()
 h5(htmlOutput("intro3"))  
+
+#-------------------------------------------------------------------------------------------------------
 
  output$intro1 <- renderText({  # create interactive text t1
 
@@ -499,6 +510,8 @@ the game continues. Guess wrong, or turn over the same value card of a different
 
  })
 
+ #-------------------------------------------------------------------------------------------------------
+ 
  output$intro1a <- renderText({  # create interactive text t1
 
  
@@ -519,6 +532,7 @@ However, The app allows you to choose the first dealt card [middle box] and vary
        "."))
  })
 
+ #-------------------------------------------------------------------------------------------------------
  
   output$intro2 <- renderText({  # create interactive text t1
 
@@ -528,20 +542,19 @@ However, The app allows you to choose the first dealt card [middle box] and vary
     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
                "")   ,
-      # br(),
-      # br(), 
+    
      tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
                " 
 
-Here the game is limited to three cards, the first card is revealed but there are also two mystery cards. We show what happens, both, when you replace the first card dealt (discarding this from the game) with another random card and play with the original dealt card. The question is what is the probability that both your guesses are correct?
-
- .  ") ,
+Here the game is limited to three cards, the first card is revealed but there are also two mystery cards. We show what happens, both, when you replace the first card dealt (discarding this from the game) with another random card and play with the original dealt card. The question is what is the probability that both your guesses are correct?") ,
       
        "."))
 
  })
  
+  #-------------------------------------------------------------------------------------------------------
+  
   output$intro3 <- renderText({  # create interactive text t1
 
  
@@ -550,13 +563,12 @@ Here the game is limited to three cards, the first card is revealed but there ar
     tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
                "")   ,
-      # br(),
-      # br(), 
+  
      tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
                " 
 
-In our app for a regular deck of cards, a Jack is represented by the card value 10 and 13 for the 'number of cards of each suit in deck' creates a regular deck of cards. Ignore the app for now and imagine having been dealt a Jack, we should guess lower because there are then 9 x 4 = 36 cards in a standard deck of cards that are lower than the Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ~ 70.6%. However, we should if given the opportunity swap the Jack. This is because relative to the Jack there are six more extreme, so better cards 2, 3, 4, Q, K and A, there are five cards 6, 7, 8, 9, 10 that are worse in comparison to the Jack and the card 5 permits the same chance of guessing the next card correct as we would have with a Jack.
+In this app for a regular deck of cards, a Jack is represented by the card value 10 and 13 for the 'number of cards of each suit in deck' creates a regular deck of cards. Ignore the app for now and imagine having been dealt a Jack, we should guess lower because there are then 9 x 4 = 36 cards in a standard deck of cards that are lower than the Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ~ 70.6%. However, we should if given the opportunity swap the Jack. This is because relative to the Jack there are six more extreme, so better cards 2, 3, 4, Q, K and A, there are five cards 6, 7, 8, 9, 10 that are worse in comparison to the Jack and the card 5 permits the same chance of guessing the next card correct as we would have with a Jack. So a picture card is not always that great!
 
  ") ,
       
@@ -564,7 +576,8 @@ In our app for a regular deck of cards, a Jack is represented by the card value 
 
  })
  
- 
+ #-------------------------------------------------------------------------------------------------------
+
  
    output$intro4 <- renderText({  # create interactive text t1
 
@@ -589,8 +602,8 @@ However, The app allows you to choose the first dealt card [2nd box on left] and
  })
  
  
+#-------------------------------------------------------------------------------------------------------
 
- 
    output$note <- renderText({  # create interactive text t1
 
  
@@ -613,14 +626,7 @@ Check out the R code and other links on the left, have fun.") ,
 
  })
  
- 
- 
- 
- 
- 
- 
- 
- 
+#-------------------------------------------------------------------------------------------------------
 
 ```
 
@@ -631,43 +637,13 @@ Column {data-width=350}
 
 ```{r}
                                       
-
-                           
- # h5(htmlOutput("text1"))      ## print text1
- # 
- #   #-------------
- # 
- #  output$text1 <- renderText({  # create interactive text t1
- # 
- #    result <- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))   # R code
- #    
- #    print(paste0(                                                               # text
- #    
- #    "Simulation is approximation to the analytical result but we do
- #     it as a programming exercise. If we swap a the card of value "
- #                 
- #      , tags$span(style="color:blue;font-weight:bold;", input$swap) ,
- #    
- #    " in a pack of "
- #    
- #      , tags$span(style="color:blue;font-weight:bold;", input$Decksize) ,
- #    
- #    " in each suit for another random card the probability of winning is approximated to be "
- #    
- #      , tags$span(style="color:blue ;font-weight:bold;", calc.prob(result)) ,
- #                   "
- #      "))
- # 
- # })
+#-------------------------------------------------------------------------------------------------------
   
- #-------------
-  
-
 h5(htmlOutput("text2"))      ## print text1
-h5(htmlOutput("text3"))      ## print text1
+h5(htmlOutput("text3"))      ## print  
 h5(htmlOutput("text3a"))
 h5(htmlOutput("text4")) 
- #-------------
+#-------------------------------------------------------------------------------------------------------
 
   output$text2 <- renderText({  # create interactive text t1
 
@@ -713,7 +689,8 @@ h5(htmlOutput("text4"))
  })
 
 
-  ###--------------------
+#-------------------------------------------------------------------------------------------------------
+
 
  output$text3 <- renderText({  # create interactive text t1
 
@@ -765,14 +742,11 @@ h5(htmlOutput("text4"))
  })
 
 
-#--------------------------
-
-
-  ###--------------------
+#-------------------------------------------------------------------------------------------------------
 
  output$text3a <- renderText({  # create interactive text t1
 
-     result<- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))   # R code   # R code
+     result<- replicate(input$sims, simi(card1=input$swap, n=input$Decksize))   # R code   
    
     print(paste0(                                                               # text
     
@@ -798,23 +772,18 @@ h5(htmlOutput("text4"))
 
  })
 
-
-
-
+#-------------------------------------------------------------------------------------------------------
 
  output$text4 <- renderText({  # create interactive text t1
 
      invisible(x <-pycr( pack.size=input$Decksize, card1=input$swap))   # R code
-    
-     x1 <- x[1][[1]]
+  
      x2 <- x[2][[1]]
      
      
      invisible(s <-pycr1( pack.size=input$Decksize, card1=input$swap))   # R code
     
      s1 <- s[1][[1]]
-     s2 <- s[2][[1]]
-    
      
      if (x2  > s1) {action ="You should swap your card!"} else {action ="You should keep your card!"}
     
@@ -833,7 +802,7 @@ h5(htmlOutput("text4"))
 
  })
 
-
+#-------------------------------------------------------------------------------------------------------
 
 
 ```

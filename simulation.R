@@ -3,10 +3,15 @@
 
 rm(list=ls())
 
-# 1) 3 random cards, all need to be guessed correctly from a deck of size x
-# 2) swap given card for a random, all need to be guessed correctly from a deck of 51
+#------------------------------------------------------------------------------------------------------
+#-----------------------simulation function delivers prob of guessing 2 mystery cards
+#-----------------------The first card that we observe is always swapped
+#-----------------------we can pick the deck size and first card value 
+#-----------------------inputs pack size and initial card value
+#------------------------------------------------------------------------------------------------------
 
-tmpfun <- function(card1=NULL, n=13) {
+
+simi <- function(card1=NULL, n=13) {
   
   pack=rep(1:n, times=4)
   card1 <- abs(card1)
@@ -17,15 +22,15 @@ tmpfun <- function(card1=NULL, n=13) {
   
   # --------------------------------
   # 2--------------------------------Guess card2 
- 
+  
   #remove first card after we have seen it
-    x <- which(pack2==hand[1])[1]  
-    pack3 <- pack2[-x] 
-
-     A <- sum(hand[1] < pack3) # count the cards > first card
-     B <- sum(hand[1] > pack3) # count the cards < first card
-   
-    if (A>B )  	{             # if there are more cards greater than the first card in our hand guess higher
+  x <- which(pack2==hand[1])[1]  
+  pack3 <- pack2[-x] 
+  
+  A <- sum(hand[1] < pack3) # count the cards > first card
+  B <- sum(hand[1] > pack3) # count the cards < first card
+  
+  if (A>B )  	{             # if there are more cards greater than the first card in our hand guess higher
     H1 <- hand[2] > hand[1]   # check if our guess is correct
     L1=NA
   }  else {  # if we guess lower count if we correct!
@@ -68,7 +73,7 @@ tmpfun <- function(card1=NULL, n=13) {
   ret$L2  = L2 # L2 after correctly guessing 2nd card, prop of 2nd cards that are > 9 and card 3 is of lesser value than card 2
   
   return(list(ret) )  # output the information
- }
+}
 
 
 # function to manage the results...this seems like it could be shortened
@@ -90,39 +95,32 @@ calc.prob <- function(result ) {
 }
 
 
+# --------------------------run the simulations and manage the output
 
-# 5 ---------------------------run the simulations and manage the output
-# three choices enter "3 random" and 3 cards are chosen at random to play the game . expect 50%
-# enter a positive integer between 1 and 14. That is the first card you cannot change it . Q1 use 11 for a jack expect 48%
-# enter a negative integer between 1 and 14. That is the first card you always change. Enter -11 for Question 2.  %50?
-# enter 0. A random first card always change.50%?
-# enter 99. play the game optimally changing on cards 5:11 ~ 55%
 
   set.seed(124142)
   
   for(i in 1:13) {
-    sims <- 500000
-    result <- replicate(sims, tmpfun(card1=-i, n=13))
+    sims <- 50000
+    result <- replicate(sims, simi(card1=-i, n=13))
   print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
   }
   
   for(i in 1:3) {
-    sims <- 500000
-    result <- replicate(sims, tmpfun(card1=-i, n=3))
+    sims <- 50000
+    result <- replicate(sims, simi(card1=-i, n=3))
     print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
   }
   
   
   for(i in 1:5) {
-    sims <- 500000
-    result <- replicate(sims, tmpfun(card1=-i, n=5))
+    sims <- 50000
+    result <- replicate(sims, simi(card1=-i, n=5))
     print(paste0("Swapping ",i," Probability of winning ",calc.prob(result)))
   }
   
-
-
-
-
+ 
+     
 
 
 
