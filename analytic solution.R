@@ -235,7 +235,7 @@ pycr <- function( pack.size=13, card1=8 ) {
 }
 
 
-# throw away card first card and replace randomly, the analytical prob of winning 
+# execute
 for(i in 1:13){
   cat(paste0("We remove and replace card ",print(i),"\n"))
   pycr(pack.size=13,card1=i)
