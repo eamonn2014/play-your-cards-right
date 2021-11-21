@@ -470,9 +470,9 @@ References:
  
 [Flexdashboard code](https://raw.githubusercontent.com/eamonn2014/play-your-cards-right/master/test/app.Rmd) 
 
-[Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability%202.ods?raw=true) 
+<!-- [Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability%202.ods?raw=true)  -->
 
-[Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability.ods?raw=true)
+<!-- [Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability.ods?raw=true) -->
 
 [Manual calculation](https://github.com/eamonn2014/play-your-cards-right/blob/master/card%20puzzle%20manual%20calculation.png)
 
@@ -681,7 +681,7 @@ h5(htmlOutput("text4"))
     
         tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
     
-    " cards of each suit and play optimally (to maximise our chance of winning) is ")
+    " cards of each suit and play optimally is ")
     
       , tags$span(style="color:blue ;font-weight:bold;font-size: 20px;", x2) ,
     
@@ -731,7 +731,7 @@ h5(htmlOutput("text4"))
     
         tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
     
-    " cards of each suit and play optimally (to maximise our chance of winning) is ")
+    " cards of each suit and play optimally is ")
     
       , tags$span(style="color:blue ;font-weight:bold;font-size: 20px;", x1) ,
     
@@ -796,7 +796,7 @@ h5(htmlOutput("text4"))
     print(paste0(                                                               # text
     
      tags$hr(),
-        br(),
+      #  br(),
     tags$span(style="color:red;font-weight:bold; height: 50px; width: 100%; text-align:right; font-size: 20px;", 
                
                action)   ,
