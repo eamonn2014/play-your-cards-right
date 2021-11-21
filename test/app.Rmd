@@ -457,20 +457,25 @@ Column {.sidebar}
 
 References:
 
-[Play Your Cards Right](https://en.wikipedia.org/wiki/Play_Your_Cards_Right "")
+[Play Your Cards Right wiki](https://en.wikipedia.org/wiki/Play_Your_Cards_Right "")
 
-[Question](https://www.significancemagazine.com/culture/706-probability-puzzle-higher-or-lower"")
+[Probability puzzle: Higher or lower?](https://www.significancemagazine.com/culture/706-probability-puzzle-higher-or-lower"")
 
-[Partial solution](https://rss.onlinelibrary.wiley.com/doi/epdf/10.1111/1740-9713.01564 "")
+[Probability puzzle: Partial solution](https://rss.onlinelibrary.wiley.com/doi/epdf/10.1111/1740-9713.01564 "")
 
- function1
+[R function replace card ](https://raw.githubusercontent.com/eamonn2014/play-your-cards-right/master/analytic%20solution.R "")
  
- function2
+[R function keep card](https://raw.githubusercontent.com/eamonn2014/play-your-cards-right/master/analytic%20solution%20keeping%20first%20card.R "")
  
- function3
+[R simulation code replace card](https://raw.githubusercontent.com/eamonn2014/play-your-cards-right/master/simulation.R "") 
  
- 
- 
+[Flexdashboard code](https://raw.githubusercontent.com/eamonn2014/play-your-cards-right/master/test/app.Rmd) 
+
+[Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability%202.ods?raw=true) 
+
+[Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability.ods?raw=true)
+
+
 
 Column {data-width=300}
 -----------------------------------------------------------------------
@@ -504,7 +509,7 @@ h5(htmlOutput("intro3"))
      tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
                "In the 80's British TV show 'Play Your Cards Right' contestants were dealt one card face up and several cards face down from a standard pack of 52 cards. They then had to guess whether the next card is higher or lower than the overturned card. Guess right and
-the game continues. Guess wrong, or turn over the same value card of a different suit and the game is over. ") ,
+the game continues. Guess wrong, or turn over the same value card of a different suit and the game is over. A question based on this was printed in the RSS significance magazine, see second link on the left. ") ,
       
        "."))
 
