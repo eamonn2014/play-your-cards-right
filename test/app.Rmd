@@ -435,19 +435,18 @@ Column {.sidebar}
 ```{r}
 
               br()
-
-              numericInput(inputId=("Decksize"),  
-                  label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+               numericInput(inputId=("Decksize"),  
+                  label = tags$span(style="color:black;font-weight:bold;font-size: 16px;", 
                   "No of cards of each suit in deck") ,
                   value = 13, min=3,max=101, step=2)
 
                numericInput(inputId=("swap"),   
-                      label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+                      label = tags$span(style="color:black;font-weight:bold;font-size: 16px;", 
                       "First card dealt") ,
                       value = 10, min=1,max=101, step=1)
                 
                 numericInput(inputId=("sims"),   
-                       label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
+                       label = tags$span(style="color:black;font-weight:bold;font-size: 16px;", 
                         "No of simulations") ,
                          value = 1000, min=1000,max=1000000, step=1000) 
 
@@ -474,6 +473,8 @@ References:
 [Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability%202.ods?raw=true) 
 
 [Excel calc](https://github.com/eamonn2014/play-your-cards-right/blob/master/help%20for%20play%20your%20cards%20right%20probability.ods?raw=true)
+
+[Manual calculation](https://github.com/eamonn2014/play-your-cards-right/blob/master/card%20puzzle%20manual%20calculation.png)
 
 
 
