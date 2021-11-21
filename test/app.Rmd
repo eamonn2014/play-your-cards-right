@@ -624,7 +624,7 @@ However, The app allows you to choose the first dealt card [2nd box on left] and
                
                " 
 
-When to swap is quite intuitive as explained in the introduction. It is interesting however, that if you were to swap your initial card regardless of its value (a bad idea if you want to win), the probability of winning is the same no matter what value the initial card is, with one exception, the middle card, this has an oh so very slight increase in the probability of winning relative to all the other cards. Observer this by comparing the red probabilities quoted above whilst varying the first card dealt. The simulation is not sensitive enough to reveal this, unless I presume you can perfrom a massive number of simulations. 
+When to swap is quite intuitive as explained in the introduction. It is interesting however, that if you were to swap your initial card regardless of its value (a bad idea if you want to win), the probability of winning is the same no matter what value the initial card is, with one exception, the middle card, this has an oh so very slight increase in the probability of winning relative to all the other cards. Observe this by comparing the red probabilities quoted above whilst varying the first card dealt. The simulation is not sensitive enough to reveal this, unless I presume you can perfrom a massive number of simulations. 
 
 Check out the R code and other links on the left, have fun.") ,
       
