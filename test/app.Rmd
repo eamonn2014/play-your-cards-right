@@ -433,7 +433,7 @@ numericInput(inputId=("Decksize"),
              
               label = tags$span(style="color:black;font-weight:bold;font-size: 12px;", 
                
-               "No of cards in each suit in deck") ,
+               "No of cards of each suit in deck") ,
              
              
              value = 13, min=3,max=101, step=2)
@@ -556,7 +556,7 @@ Here the game is limited to three cards, the first card is revealed but there ar
                
                " 
 
-To get started, in a standard pack is dealt a Jack (in our app a Jack is represented by card value 10) we should guess lower because there are then 9 x 4 = 36 cards in a standard pack of cards that are lower than the Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ≈ 70.6%. However, we should if given the opportunity swap the Jack. This is because relative to the Jack there are 6 more extreme , so better cards, 2,3,4,Q,K and A, the cards 6,7,8,9,10 are worse in comparison to the Jack and the card 5 has the same chance of guessing the next card correct as the Jack.
+In our app for a regular deck of cards, a Jack is represented by the card value 10 and 13 for the 'number of cards of each suit in deck' creates a regular deck of cards. Ignore the app for now and imagine having been dealt a Jack, we should guess lower because there are then 9 x 4 = 36 cards in a standard deck of cards that are lower than the Jack, there are 51 cards unseen, so the probability that the first mystery card is lower than a Jack can be calculated as 36/51 ~ 70.6%. However, we should if given the opportunity swap the Jack. This is because relative to the Jack there are six more extreme, so better cards 2, 3, 4, Q, K and A, there are five cards 6, 7, 8, 9, 10 that are worse in comparison to the Jack and the card 5 permits the same chance of guessing the next card correct as we would have with a Jack.
 
  ") ,
       
@@ -605,7 +605,9 @@ However, The app allows you to choose the first dealt card [2nd box on left] and
                
                " 
 
-When to swap is quite intuitive as explained in the introduction. It is interesting however, that if you were to swap your initial card regardless of its value (a bad idea if you want to win), the probability of winning is the same no matter what value the initial card is, with one exception, the middle card, this has an oh so very slight increase in the probability of winning relative to all the other cards. Observer this by comparing the red probabilities quoted above whilst varying the first card dealt. The simulation is not sensitive enough to reveal this, unless I presume you can perfrom a massive number of simulations. Have fun.") ,
+When to swap is quite intuitive as explained in the introduction. It is interesting however, that if you were to swap your initial card regardless of its value (a bad idea if you want to win), the probability of winning is the same no matter what value the initial card is, with one exception, the middle card, this has an oh so very slight increase in the probability of winning relative to all the other cards. Observer this by comparing the red probabilities quoted above whilst varying the first card dealt. The simulation is not sensitive enough to reveal this, unless I presume you can perfrom a massive number of simulations. 
+
+Check out the R code and other links on the left, have fun.") ,
       
        "."))
 
