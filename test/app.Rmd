@@ -478,6 +478,8 @@ References:
 
 [52!](https://www.youtube.com/watch?v=SLIvwtIuC3Y&ab_channel=funstufffella)
 
+[52! mind blowing](https://www.youtube.com/watch?v=0DSclqnnC2s&t=1s&ab_channel=ChrisDavis)
+
 Column {data-width=300}
 -----------------------------------------------------------------------
 
@@ -650,7 +652,7 @@ Check out the R code and other links on the left, have fun.") ,
       # br(),
      tags$span(style="color:black;font-weight:bold;font-size: 20px;", 
                
-              "P.S. as an aside there are 52! possible orders for a deck of 52 cards, see the last link.", 
+              "P.S. There are 52! possible orders for a deck of 52 cards, see the last two links. The enormity of 52! is truly mind blowing", 
                       
                       ) ,
       
